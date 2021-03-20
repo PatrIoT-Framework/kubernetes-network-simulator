@@ -14,6 +14,11 @@ public class KubernetesManager implements Manager {
         networkCrdManager = new NetworkCrdManager(kubernetesClient);
     }
 
+    public KubernetesManager(KubernetesClient client) {
+        kubernetesClient = client;
+        networkCrdManager = new NetworkCrdManager(kubernetesClient);
+    }
+
     public CrdManager<NetworkCrd> networkCrd() {
         return networkCrdManager;
     }

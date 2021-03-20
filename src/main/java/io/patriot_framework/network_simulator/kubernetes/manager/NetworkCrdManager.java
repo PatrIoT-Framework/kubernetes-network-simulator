@@ -3,7 +3,6 @@ package io.patriot_framework.network_simulator.kubernetes.manager;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
-import io.patriot_framework.network_simulator.kubernetes.crd.Crd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkList;
 
@@ -29,5 +28,19 @@ public class NetworkCrdManager implements CrdManager<NetworkCrd> {
     @Override
     public boolean delete(NetworkCrd crd) {
         return networkCrdClient.delete(crd);
+    }
+
+    @Override
+    public NetworkCrd get(String name) {
+        return networkCrdClient
+                .list()
+                .getItems()
+                .stream()
+                .filter(network -> network
+                        .getMetadata()
+                        .getName()
+                        .equals(name))
+                .findFirst()
+                .orElse(null);
     }
 }

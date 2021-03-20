@@ -1,7 +1,5 @@
 package io.patriot_framework.network_simulator.kubernetes.manager;
 
-import io.patriot_framework.network_simulator.kubernetes.crd.Crd;
-
 public interface CrdManager<T> {
 
     T create(T crd);
@@ -9,4 +7,6 @@ public interface CrdManager<T> {
     T update(T crd);
 
     boolean delete(T crd);
+
+    T get(String name);
 }
