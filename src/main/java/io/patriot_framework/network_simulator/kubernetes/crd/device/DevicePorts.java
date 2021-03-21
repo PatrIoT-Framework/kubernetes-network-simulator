@@ -2,9 +2,12 @@ package io.patriot_framework.network_simulator.kubernetes.crd.device;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPortBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonDeserialize()
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -15,7 +18,7 @@ public class DevicePorts {
     @JsonProperty("networkName")
     private String networkName;
     @JsonProperty("networkPolicyPorts")
-    private NetworkPolicyPort[] networkPolicyPorts;
+    private List<NetworkPolicyPort> networkPolicyPorts = new ArrayList<>();
 
     public String getDeviceName() {
         return deviceName;
@@ -33,11 +36,11 @@ public class DevicePorts {
         this.networkName = networkName;
     }
 
-    public NetworkPolicyPort[] getNetworkPolicyPorts() {
+    public List<NetworkPolicyPort> getNetworkPolicyPorts() {
         return networkPolicyPorts;
     }
 
-    public void setNetworkPolicyPorts(NetworkPolicyPort[] networkPolicyPorts) {
+    public void setNetworkPolicyPorts(List<NetworkPolicyPort> networkPolicyPorts) {
         this.networkPolicyPorts = networkPolicyPorts;
     }
 }

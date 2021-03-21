@@ -8,6 +8,9 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @JsonDeserialize(
         using = JsonDeserializer.None.class
 )
@@ -21,10 +24,10 @@ public class DeviceSpec implements KubernetesResource {
     private ServiceSpec serviceSpec;
     @JsonProperty("deviceIngressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private DevicePorts[] deviceIngressPorts;
+    private List<DevicePorts> deviceIngressPorts = new ArrayList<>();
     @JsonProperty("DeviceEgressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private DevicePorts[] deviceEgressPorts;
+    private List<DevicePorts> deviceEgressPorts = new ArrayList<>();
 
     public String getNetworkName() {
         return networkName;
@@ -50,19 +53,19 @@ public class DeviceSpec implements KubernetesResource {
         this.serviceSpec = serviceSpec;
     }
 
-    public DevicePorts[] getDeviceIngressPorts() {
+    public List<DevicePorts> getDeviceIngressPorts() {
         return deviceIngressPorts;
     }
 
-    public void setDeviceIngressPorts(DevicePorts[] deviceIngressPorts) {
+    public void setDeviceIngressPorts(List<DevicePorts> deviceIngressPorts) {
         this.deviceIngressPorts = deviceIngressPorts;
     }
 
-    public DevicePorts[] getDeviceEgressPorts() {
+    public List<DevicePorts> getDeviceEgressPorts() {
         return deviceEgressPorts;
     }
 
-    public void setDeviceEgressPorts(DevicePorts[] deviceEgressPorts) {
+    public void setDeviceEgressPorts(List<DevicePorts> deviceEgressPorts) {
         this.deviceEgressPorts = deviceEgressPorts;
     }
 }
