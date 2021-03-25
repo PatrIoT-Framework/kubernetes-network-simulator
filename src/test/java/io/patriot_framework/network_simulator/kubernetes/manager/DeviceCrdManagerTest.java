@@ -31,6 +31,8 @@ public class DeviceCrdManagerTest extends AbstractManagerTest {
         if (networkCrd != null) {
             kubernetesManager.networkCrd().delete(networkCrd);
         }
+        DeviceCrd deviceCrd = kubernetesManager.deviceCrd().get(DEVICE_NAME);
+        kubernetesManager.deviceCrd().delete(deviceCrd);
     }
 
     @Test
