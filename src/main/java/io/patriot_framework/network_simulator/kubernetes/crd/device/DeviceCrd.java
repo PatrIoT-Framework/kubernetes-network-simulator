@@ -18,4 +18,8 @@ public class DeviceCrd extends CustomResource<DeviceSpec, DeviceStatus> implemen
     public String podName(){
         return getMetadata().getName() + "-pod";
     }
+
+    public String serviceName() {
+        return getMetadata().getName() + "-service";
+    }
 }

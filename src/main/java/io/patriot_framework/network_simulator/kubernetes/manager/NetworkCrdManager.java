@@ -31,6 +31,11 @@ public class NetworkCrdManager implements CrdManager<NetworkCrd> {
     }
 
     @Override
+    public boolean delete(String name) {
+        return delete(get(name));
+    }
+
+    @Override
     public NetworkCrd get(String name) {
         return networkCrdClient
                 .list()

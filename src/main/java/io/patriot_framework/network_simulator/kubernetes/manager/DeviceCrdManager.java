@@ -22,12 +22,17 @@ public class DeviceCrdManager implements CrdManager<DeviceCrd> {
 
     @Override
     public DeviceCrd update(DeviceCrd crd) {
-        return deviceCrdClient.replace(crd);
+        return deviceCrdClient.createOrReplace(crd);
     }
 
     @Override
     public boolean delete(DeviceCrd crd) {
         return deviceCrdClient.delete(crd);
+    }
+
+    @Override
+    public boolean delete(String name) {
+        return delete(get(name));
     }
 
     @Override

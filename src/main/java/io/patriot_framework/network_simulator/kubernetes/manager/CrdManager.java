@@ -8,5 +8,7 @@ public interface CrdManager<T> {
 
     boolean delete(T crd);
 
+    boolean delete(String name);
+
     T get(String name);
 }
