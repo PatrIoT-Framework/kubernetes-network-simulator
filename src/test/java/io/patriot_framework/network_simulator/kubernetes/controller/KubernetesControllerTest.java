@@ -57,7 +57,7 @@ public class KubernetesControllerTest {
 
         CoapControlClient client = new CoapControlClient(
                 String.format("coap://%s:%s",
-                        kubeDevice.getManagementIdAddress(),
+                        kubeDevice.getPublicIpAddress(),
                         kubeDevice.getManagementPort().getPort()));
 
         assertNotNull(client.get("/sensor/simple-thermometer"));

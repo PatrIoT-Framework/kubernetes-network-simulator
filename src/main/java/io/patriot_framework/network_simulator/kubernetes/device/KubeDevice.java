@@ -16,9 +16,13 @@ public interface KubeDevice {
 
     void setDeviceConfig(DeviceConfig deviceConfig);
 
-    String getManagementIdAddress();
+    String getPublicIpAddress();
 
-    void setManagementIdAddress(String managementIdAddress);
+    void setPublicIpAddress(String publicIpAddress);
+
+    String getPrivateIpAddress();
+
+    void setPrivateIpAddress(String privateIpAddress);
 
     io.patriot_framework.generator.device.Device getDevice();
 

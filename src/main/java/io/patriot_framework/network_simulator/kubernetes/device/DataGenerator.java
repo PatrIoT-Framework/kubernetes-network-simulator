@@ -11,11 +11,11 @@ public class DataGenerator implements KubeDevice {
     private Network network;
     private io.patriot_framework.generator.device.Device device;
     private DeviceConfig deviceConfig;
-    private String ipAddress;
+    private String publicIpAddress;
+    private String privateIpAddress;
     private List<Network> connectedNetworks = new ArrayList<>();
     private List<Device> connectedDevices = new ArrayList<>();
     private Object creator;
-    private String managementIdAddress;
     private DeviceConfigPort managementPort;
     public static final DeviceConfigPort DEFAULT_MANAGEMENT_PORT = new DeviceConfigPort(5683, "UDP");
 
@@ -62,12 +62,20 @@ public class DataGenerator implements KubeDevice {
         this.deviceConfig = deviceConfig;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getPublicIpAddress() {
+        return publicIpAddress;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setPublicIpAddress(String publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
+    }
+
+    public String getPrivateIpAddress() {
+        return privateIpAddress;
+    }
+
+    public void setPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
     }
 
     public List<Network> getConnectedNetworks() {
@@ -92,14 +100,6 @@ public class DataGenerator implements KubeDevice {
 
     public void setCreator(Object creator) {
         this.creator = creator;
-    }
-
-    public String getManagementIdAddress() {
-        return managementIdAddress;
-    }
-
-    public void setManagementIdAddress(String managementIdAddress) {
-        this.managementIdAddress = managementIdAddress;
     }
 
     public void setManagementPort(DeviceConfigPort managementPort) {

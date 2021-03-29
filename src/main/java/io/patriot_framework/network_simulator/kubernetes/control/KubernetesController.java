@@ -121,7 +121,7 @@ public class KubernetesController implements Controller {
     private void updateDeviceInformationFromKubernetes(KubeDevice device, DeviceCrd deviceCrd) {
         Pod pod = kubernetesManager.getDevicePod(deviceCrd);
         Service service = kubernetesManager.getDeviceService(deviceCrd);
-        device.setManagementIdAddress(pod.getStatus().getHostIP());
+        device.setPublicIpAddress(pod.getStatus().getHostIP());
 
         service.getSpec()
                 .getPorts()
