@@ -8,10 +8,12 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.extensions.IPBlockBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyIngressRuleBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPeerBuilder;
+import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
 import io.patriot_framework.network.simulator.api.model.network.Network;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
+import io.patriot_framework.network_simulator.kubernetes.crd.device.builders.DevicePortBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
@@ -19,6 +21,7 @@ import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManag
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -95,6 +98,14 @@ public class KubernetesController implements Controller {
 
     @Override
     public void connectDevicesBothWays(KubeDevice device, KubeDevice device2) {
+        DeviceCrd firstCrd = kubernetesManager.deviceCrd().get(device.getName());
+        DeviceCrd secondCrd = kubernetesManager.deviceCrd().get(device2.getName());
+
+        connectDevices(firstCrd, secondCrd);
+        connectDevices(secondCrd, firstCrd);
+
+        kubernetesManager.deviceCrd().update(firstCrd);
+        kubernetesManager.deviceCrd().update(secondCrd);
 
     }
 
@@ -122,6 +133,7 @@ public class KubernetesController implements Controller {
         Pod pod = kubernetesManager.getDevicePod(deviceCrd);
         Service service = kubernetesManager.getDeviceService(deviceCrd);
         device.setPublicIpAddress(pod.getStatus().getHostIP());
+        device.setPrivateIpAddress(pod.getStatus().getPodIP());
 
         service.getSpec()
                 .getPorts()
@@ -155,5 +167,28 @@ public class KubernetesController implements Controller {
 
         existingNP.getEgress().addAll(networkPolicySpec.getEgress());
         existingNP.getIngress().addAll(networkPolicySpec.getIngress());
+    }
+
+
+    private void connectDevices(DeviceCrd source, DeviceCrd target) {
+        connectDevices(source, target, new ArrayList<>(), new ArrayList<>());
+    }
+
+    private void connectDevices(DeviceCrd source, DeviceCrd target,
+                                List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+        source.getSpec()
+                .getDeviceEgressPorts()
+                .add(new DevicePortBuilder()
+                        .withDeviceName(target.getMetadata().getName())
+                        .withNetworkName(target.getSpec().getNetworkName())
+                        .withNetworkPolicyPorts(targetPorts)
+                        .build());
+        target.getSpec()
+                .getDeviceIngressPorts()
+                .add(new DevicePortBuilder()
+                        .withDeviceName(source.getMetadata().getName())
+                        .withNetworkName(source.getSpec().getNetworkName())
+                        .withNetworkPolicyPorts(sourcePorts)
+                        .build());
     }
 }

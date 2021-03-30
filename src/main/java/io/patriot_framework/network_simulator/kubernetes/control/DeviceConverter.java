@@ -21,8 +21,10 @@ import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceSpec;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.builders.DeviceCrdBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.builders.DeviceSpecBuilder;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfig;
+import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,8 +96,7 @@ public class DeviceConverter {
 
 
     private static List<ContainerPort> configToContainerPorts(DeviceConfig config) {
-        return config
-                .getPorts()
+        return devicePorts(config)
                 .stream()
                 .map(port -> new ContainerPortBuilder()
                         .withContainerPort(port.getPort())
@@ -117,8 +118,7 @@ public class DeviceConverter {
     }
 
     private static List<ServicePort> configToServicePorts(DeviceConfig config) {
-        return config
-                .getPorts()
+        return devicePorts(config)
                 .stream()
                 .map(port -> new ServicePortBuilder()
                         .withProtocol(port.getProtocol())
@@ -126,5 +126,14 @@ public class DeviceConverter {
                         .withTargetPort(new IntOrString(port.getPort()))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+
+    private static List<DeviceConfigPort> devicePorts(DeviceConfig config) {
+        List<DeviceConfigPort> ports = new ArrayList<>(config.getPorts());
+        if (config.getManagementPort() != null && !config.getPorts().contains(config.getManagementPort())) {
+            ports.add(config.getManagementPort());
+        }
+        return ports;
     }
 }

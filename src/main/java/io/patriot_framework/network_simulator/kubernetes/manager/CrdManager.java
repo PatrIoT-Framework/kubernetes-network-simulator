@@ -10,5 +10,7 @@ public interface CrdManager<T> {
 
     boolean delete(String name);
 
+    boolean deleteAll();
+
     T get(String name);
 }

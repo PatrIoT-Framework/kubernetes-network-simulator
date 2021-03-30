@@ -24,10 +24,6 @@ public interface KubeDevice {
 
     void setPrivateIpAddress(String privateIpAddress);
 
-    io.patriot_framework.generator.device.Device getDevice();
-
-    void setDevice(io.patriot_framework.generator.device.Device device);
-
     DeviceConfigPort getManagementPort();
 
     void setManagementPort(DeviceConfigPort managementPort);

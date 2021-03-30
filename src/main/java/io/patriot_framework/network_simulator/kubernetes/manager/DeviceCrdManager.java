@@ -36,16 +36,14 @@ public class DeviceCrdManager implements CrdManager<DeviceCrd> {
     }
 
     @Override
+    public boolean deleteAll() {
+        return deviceCrdClient.delete(deviceCrdClient.list().getItems());
+    }
+
+    @Override
     public DeviceCrd get(String name) {
         return deviceCrdClient
-                .list()
-                .getItems()
-                .stream()
-                .filter(device -> device
-                        .getMetadata()
-                        .getName()
-                        .equals(name))
-                .findFirst()
-                .orElse(null);
+                .withName(name)
+                .get();
     }
 }

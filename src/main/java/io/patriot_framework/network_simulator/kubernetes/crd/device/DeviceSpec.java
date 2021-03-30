@@ -25,10 +25,10 @@ public class DeviceSpec implements KubernetesResource {
     private ServiceSpec serviceSpec;
     @JsonProperty("deviceIngressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DevicePorts> deviceIngressPorts = new ArrayList<>();
+    private List<DevicePort> deviceIngressPorts = new ArrayList<>();
     @JsonProperty("deviceEgressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DevicePorts> deviceEgressPorts = new ArrayList<>();
+    private List<DevicePort> deviceEgressPorts = new ArrayList<>();
     @JsonProperty("enableInternet")
     private boolean enableInternet;
     @JsonProperty("networkPolicySpec")
@@ -59,19 +59,19 @@ public class DeviceSpec implements KubernetesResource {
         this.serviceSpec = serviceSpec;
     }
 
-    public List<DevicePorts> getDeviceIngressPorts() {
+    public List<DevicePort> getDeviceIngressPorts() {
         return deviceIngressPorts;
     }
 
-    public void setDeviceIngressPorts(List<DevicePorts> deviceIngressPorts) {
+    public void setDeviceIngressPorts(List<DevicePort> deviceIngressPorts) {
         this.deviceIngressPorts = deviceIngressPorts;
     }
 
-    public List<DevicePorts> getDeviceEgressPorts() {
+    public List<DevicePort> getDeviceEgressPorts() {
         return deviceEgressPorts;
     }
 
-    public void setDeviceEgressPorts(List<DevicePorts> deviceEgressPorts) {
+    public void setDeviceEgressPorts(List<DevicePort> deviceEgressPorts) {
         this.deviceEgressPorts = deviceEgressPorts;
     }
 

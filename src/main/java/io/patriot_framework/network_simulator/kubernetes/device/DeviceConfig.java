@@ -13,6 +13,19 @@ public class DeviceConfig {
     private String fileConfigurationPrefixPath = "/etc/config/";
     private DeviceConfigPort managementPort;
 
+    public DeviceConfig() {
+    }
+
+    public DeviceConfig(String image) {
+        this.image = image;
+    }
+
+    public DeviceConfig(String image, DeviceConfigPort managementPort) {
+        this(image);
+        this.managementPort = managementPort;
+        ports.add(managementPort);
+    }
+
     public String getImage() {
         return image;
     }
