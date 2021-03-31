@@ -1,4 +1,4 @@
-package io.patriot_framework.network_simulator.kubernetes.crd.device;
+package io.patriot_framework.network_simulator.kubernetes.crd;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @JsonDeserialize()
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DevicePort {
+public class Ports {
     @JsonProperty("deviceName")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String deviceName;

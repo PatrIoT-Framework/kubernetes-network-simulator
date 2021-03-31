@@ -2,7 +2,7 @@ package io.patriot_framework.network_simulator.kubernetes.crd.device.builders;
 
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
-import io.patriot_framework.network_simulator.kubernetes.crd.device.DevicePort;
+import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceSpec;
 
 import java.util.List;
@@ -33,23 +33,23 @@ public class DeviceSpecBuilder {
         return this;
     }
 
-    public DeviceSpecBuilder withDeviceIngressPorts(List<DevicePort> deviceIngressPorts) {
+    public DeviceSpecBuilder withDeviceIngressPorts(List<Ports> deviceIngressPorts) {
         deviceSpec.setDeviceIngressPorts(deviceIngressPorts);
         return this;
     }
 
-    public DeviceSpecBuilder withDeviceEgressPorts(List<DevicePort> deviceEgressPorts) {
+    public DeviceSpecBuilder withDeviceEgressPorts(List<Ports> deviceEgressPorts) {
         deviceSpec.setDeviceEgressPorts(deviceEgressPorts);
         return this;
     }
 
-    public DeviceSpecBuilder withDeviceIngressPort(DevicePort devicePort) {
-        deviceSpec.getDeviceIngressPorts().add(devicePort);
+    public DeviceSpecBuilder withDeviceIngressPort(Ports ports) {
+        deviceSpec.getDeviceIngressPorts().add(ports);
         return this;
     }
 
-    public DeviceSpecBuilder withDeviceEgressPort(DevicePort devicePort) {
-        deviceSpec.getDeviceEgressPorts().add(devicePort);
+    public DeviceSpecBuilder withDeviceEgressPort(Ports ports) {
+        deviceSpec.getDeviceEgressPorts().add(ports);
         return this;
     }
 

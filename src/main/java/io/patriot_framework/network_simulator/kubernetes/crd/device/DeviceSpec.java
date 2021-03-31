@@ -8,6 +8,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
+import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +26,10 @@ public class DeviceSpec implements KubernetesResource {
     private ServiceSpec serviceSpec;
     @JsonProperty("deviceIngressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DevicePort> deviceIngressPorts = new ArrayList<>();
+    private List<Ports> deviceIngressPorts = new ArrayList<>();
     @JsonProperty("deviceEgressPorts")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<DevicePort> deviceEgressPorts = new ArrayList<>();
+    private List<Ports> deviceEgressPorts = new ArrayList<>();
     @JsonProperty("enableInternet")
     private boolean enableInternet;
     @JsonProperty("networkPolicySpec")
@@ -59,19 +60,19 @@ public class DeviceSpec implements KubernetesResource {
         this.serviceSpec = serviceSpec;
     }
 
-    public List<DevicePort> getDeviceIngressPorts() {
+    public List<Ports> getDeviceIngressPorts() {
         return deviceIngressPorts;
     }
 
-    public void setDeviceIngressPorts(List<DevicePort> deviceIngressPorts) {
+    public void setDeviceIngressPorts(List<Ports> deviceIngressPorts) {
         this.deviceIngressPorts = deviceIngressPorts;
     }
 
-    public List<DevicePort> getDeviceEgressPorts() {
+    public List<Ports> getDeviceEgressPorts() {
         return deviceEgressPorts;
     }
 
-    public void setDeviceEgressPorts(List<DevicePort> deviceEgressPorts) {
+    public void setDeviceEgressPorts(List<Ports> deviceEgressPorts) {
         this.deviceEgressPorts = deviceEgressPorts;
     }
 

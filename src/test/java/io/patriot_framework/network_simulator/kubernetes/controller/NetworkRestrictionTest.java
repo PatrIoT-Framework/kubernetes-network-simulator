@@ -80,7 +80,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
 
     @Test
-    public void deviceCanNotSeeDeviceInOtherNetwork() throws IOException {
+    public void deviceCanNotSeeDeviceInOtherNetwork() {
         Network anotherNetwork = new KubeNetwork("another-network");
         controller.createNetwork(anotherNetwork);
 
@@ -99,6 +99,4 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
                     "/sensor/simpleThermometer");
         });
     }
-
-
 }
