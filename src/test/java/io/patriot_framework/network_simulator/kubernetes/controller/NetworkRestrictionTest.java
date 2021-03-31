@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,7 +64,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
-        KubeDevice app = new Application("my-app1", anotherNetwork, deviceConfig);
+        KubeDevice app = new Application("my-app2", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
 
@@ -81,11 +82,11 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceCanNotSeeDeviceInOtherNetwork() {
-        Network anotherNetwork = new KubeNetwork("another-network");
+        Network anotherNetwork = new KubeNetwork("another-network1");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
-        KubeDevice app = new Application("my-app1", anotherNetwork, deviceConfig);
+        KubeDevice app = new Application("my-app3", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
 
@@ -107,7 +108,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
-        KubeDevice app = new Application("my-app1", anotherNetwork, deviceConfig);
+        KubeDevice app = new Application("my-app3", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
 
@@ -122,5 +123,28 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
                 "/sensor/simpleThermometer");
 
         assertTrue(result.contains("Thermometer"), result);
+    }
+
+    @Test
+    public void networkWontSeeEachOther() throws InterruptedException, IOException {
+        Network anotherNetwork = new KubeNetwork("another-network13");
+        controller.createNetwork(anotherNetwork);
+
+        DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
+        KubeDevice app = new Application("my-app4", anotherNetwork, deviceConfig);
+        controller.deployDevice(app);
+        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+
+
+
+        Thread.sleep(5000);
+
+        String hostname = Utils.httpTestingHostname(app, "/get");
+        String result = httpClient.get(hostname,
+                kubeDevice.getPrivateIpAddress(),
+                5683,
+                "/sensor/simpleThermometer");
+
+        assertFalse(result.contains("Thermometer"), result);
     }
 }
