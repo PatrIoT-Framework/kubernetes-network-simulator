@@ -12,8 +12,9 @@ import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
 import io.patriot_framework.network.simulator.api.model.network.Network;
+import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
+import io.patriot_framework.network_simulator.kubernetes.crd.builders.PortBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
-import io.patriot_framework.network_simulator.kubernetes.crd.device.builders.DevicePortBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
@@ -110,6 +111,18 @@ public class KubernetesController implements Controller {
     }
 
     @Override
+    public void connectNetworksBothWays(Network network, Network network2) {
+        NetworkCrd firstCrd = kubernetesManager.networkCrd().get(network.getName());
+        NetworkCrd secondCrd = kubernetesManager.networkCrd().get(network2.getName());
+
+        connectNetworks(firstCrd, secondCrd);
+        connectNetworks(secondCrd, firstCrd);
+
+        kubernetesManager.networkCrd().update(firstCrd);
+        kubernetesManager.networkCrd().update(secondCrd);
+    }
+
+    @Override
     public void connectDeviceToNetwork(KubeDevice device, Network network) {
 
     }
@@ -169,26 +182,52 @@ public class KubernetesController implements Controller {
         existingNP.getIngress().addAll(networkPolicySpec.getIngress());
     }
 
+    private void connectNetworks(NetworkCrd source, NetworkCrd target) {
+        connectNetworks(source, target, new ArrayList<>(), new ArrayList<>());
+    }
+
+    private void connectNetworks(NetworkCrd source, NetworkCrd target,
+                                 List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+        source.getSpec()
+                .getNetworkEgressPorts()
+                .add(buildPorts(null,
+                        target.getMetadata().getName(),
+                        targetPorts));
+        target.getSpec()
+                .getNetworkIngressPorts()
+                .add(buildPorts(null,
+                        source.getMetadata().getName(),
+                        sourcePorts));
+    }
+
 
     private void connectDevices(DeviceCrd source, DeviceCrd target) {
         connectDevices(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
+
     private void connectDevices(DeviceCrd source, DeviceCrd target,
                                 List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
                 .getDeviceEgressPorts()
-                .add(new DevicePortBuilder()
-                        .withDeviceName(target.getMetadata().getName())
-                        .withNetworkName(target.getSpec().getNetworkName())
-                        .withNetworkPolicyPorts(targetPorts)
-                        .build());
+                .add(buildPorts(target.getMetadata().getName(),
+                        target.getSpec().getNetworkName(),
+                        targetPorts));
         target.getSpec()
                 .getDeviceIngressPorts()
-                .add(new DevicePortBuilder()
-                        .withDeviceName(source.getMetadata().getName())
-                        .withNetworkName(source.getSpec().getNetworkName())
-                        .withNetworkPolicyPorts(sourcePorts)
-                        .build());
+                .add(buildPorts(source.getMetadata().getName(),
+                        source.getSpec().getNetworkName(),
+                        sourcePorts));
     }
+
+
+    private Ports buildPorts(String deviceName, String networkName, List<NetworkPolicyPort> targetPorts) {
+        return new PortBuilder()
+                .withDeviceName(deviceName)
+                .withNetworkName(networkName)
+                .withNetworkPolicyPorts(targetPorts)
+                .build();
+    }
+
+
 }

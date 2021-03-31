@@ -2,12 +2,18 @@ package io.patriot_framework.network_simulator.kubernetes.crd.network;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(
+        using = JsonDeserializer.None.class
+)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class NetworkSpec implements KubernetesResource {
     @JsonProperty("disableInsideIngressTraffic")
     private boolean disableInsideIngressTraffic;

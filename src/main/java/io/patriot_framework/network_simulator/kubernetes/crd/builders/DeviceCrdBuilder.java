@@ -1,4 +1,4 @@
-package io.patriot_framework.network_simulator.kubernetes.crd.device.builders;
+package io.patriot_framework.network_simulator.kubernetes.crd.builders;
 
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceSpec;

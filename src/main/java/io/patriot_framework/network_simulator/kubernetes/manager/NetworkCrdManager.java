@@ -22,7 +22,7 @@ public class NetworkCrdManager implements CrdManager<NetworkCrd> {
 
     @Override
     public NetworkCrd update(NetworkCrd crd) {
-        return networkCrdClient.replace(crd);
+        return networkCrdClient.createOrReplace(crd);
     }
 
     @Override
