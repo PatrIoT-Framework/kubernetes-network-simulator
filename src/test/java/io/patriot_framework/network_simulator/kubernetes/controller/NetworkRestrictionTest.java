@@ -242,4 +242,27 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         assertTrue(result.contains("Thermometer"), result);
     }
 
+    @Test
+    public void networkCanSeeDevice() throws InterruptedException, IOException {
+        Network anotherNetwork = new KubeNetwork("another-network17");
+        controller.createNetwork(anotherNetwork);
+
+        DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
+        KubeDevice app = new Application("my-app8", anotherNetwork, deviceConfig);
+        controller.deployDevice(app);
+        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+
+        controller.connectNetworkToDeviceOneWay(anotherNetwork, kubeDevice);
+
+        Thread.sleep(5000);
+
+        String hostname = Utils.httpTestingHostname(app, "/get");
+        String result = httpClient.get(hostname,
+                kubeDevice.getPrivateIpAddress(),
+                5683,
+                "/sensor/simpleThermometer");
+
+        assertTrue(result.contains("Thermometer"), result);
+    }
+
 }

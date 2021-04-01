@@ -26,6 +26,4 @@ public interface Controller {
     void connectDeviceToNetworkBothWays(KubeDevice device, Network network);
 
     void connectNetworkToDeviceOneWay(Network source, KubeDevice target);
-
-    void connectNetworkToDeviceBothWays(Network network, KubeDevice device);
 }
