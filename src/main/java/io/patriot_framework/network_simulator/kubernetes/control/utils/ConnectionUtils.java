@@ -11,6 +11,26 @@ import java.util.List;
 
 public class ConnectionUtils {
 
+    public static void connectNetworkToDevice(NetworkCrd source, DeviceCrd target) {
+        connectNetworkToDevice(source, target, new ArrayList<>(), new ArrayList<>());
+    }
+
+    public static void connectNetworkToDevice(NetworkCrd source, DeviceCrd target,
+                                              List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+        source.getSpec()
+                .getNetworkEgressPorts()
+                .add(buildPorts(target.getMetadata().getName(),
+                        target.getSpec().getNetworkName(),
+                        targetPorts));
+
+        target.getSpec()
+                .getDeviceIngressPorts()
+                .add(buildPorts(null,
+                        source.getMetadata().getName(),
+                        sourcePorts));
+    }
+
+
     public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target) {
         connectDeviceToNetwork(source, target, new ArrayList<>(), new ArrayList<>());
     }

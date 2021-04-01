@@ -138,7 +138,14 @@ public class KubernetesController implements Controller {
 
     @Override
     public void connectDeviceToNetworkBothWays(KubeDevice device, Network network) {
+        DeviceCrd deviceCrd = kubernetesManager.deviceCrd().get(device.getName());
+        NetworkCrd networkCrd = kubernetesManager.networkCrd().get(network.getName());
 
+        ConnectionUtils.connectDeviceToNetwork(deviceCrd, networkCrd);
+        ConnectionUtils.connectNetworkToDevice(networkCrd, deviceCrd);
+
+        kubernetesManager.deviceCrd().update(deviceCrd);
+        kubernetesManager.networkCrd().update(networkCrd);
     }
 
     @Override
