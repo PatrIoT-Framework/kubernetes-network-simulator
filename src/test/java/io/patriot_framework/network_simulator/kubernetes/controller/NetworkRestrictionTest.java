@@ -147,4 +147,52 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
         assertFalse(result.contains("Thermometer"), result);
     }
+
+    @Test
+    public void deviceCanSeeOneWay() throws IOException, InterruptedException {
+        Network anotherNetwork = new KubeNetwork("another-network14");
+        controller.createNetwork(anotherNetwork);
+
+        DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
+        KubeDevice app = new Application("my-app5", anotherNetwork, deviceConfig);
+        controller.deployDevice(app);
+        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+
+        controller.connectDevicesOneWay(app, kubeDevice);
+
+        Thread.sleep(5000);
+
+        String hostname = Utils.httpTestingHostname(app, "/get");
+        String result = httpClient.get(hostname,
+                kubeDevice.getPrivateIpAddress(),
+                5683,
+                "/sensor/simpleThermometer");
+
+        assertTrue(result.contains("Thermometer"), result);
+    }
+
+    @Test
+    public void deviceWontSeeOneWay() throws IOException, InterruptedException {
+        Network anotherNetwork = new KubeNetwork("another-network14");
+        controller.createNetwork(anotherNetwork);
+
+        DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
+        KubeDevice app = new Application("my-app5", anotherNetwork, deviceConfig);
+        controller.deployDevice(app);
+        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+
+        controller.connectDevicesOneWay(kubeDevice, app);
+
+        Thread.sleep(5000);
+
+        String hostname = Utils.httpTestingHostname(app, "/get");
+        String result = httpClient.get(hostname,
+                kubeDevice.getPrivateIpAddress(),
+                5683,
+                "/sensor/simpleThermometer");
+
+        assertFalse(result.contains("Thermometer"), result);
+    }
+
+
 }

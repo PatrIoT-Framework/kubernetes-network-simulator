@@ -91,7 +91,13 @@ public class KubernetesController implements Controller {
 
     @Override
     public void connectDevicesOneWay(KubeDevice source, KubeDevice target) {
+        DeviceCrd sourceCrd = kubernetesManager.deviceCrd().get(source.getName());
+        DeviceCrd targetCrd = kubernetesManager.deviceCrd().get(target.getName());
 
+        ConnectionUtils.connectDevices(sourceCrd, targetCrd);
+
+        kubernetesManager.deviceCrd().update(sourceCrd);
+        kubernetesManager.deviceCrd().update(targetCrd);
     }
 
     @Override
