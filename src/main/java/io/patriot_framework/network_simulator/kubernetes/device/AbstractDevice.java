@@ -3,8 +3,8 @@ package io.patriot_framework.network_simulator.kubernetes.device;
 import io.patriot_framework.network.simulator.api.model.devices.Device;
 import io.patriot_framework.network.simulator.api.model.network.Network;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class AbstractDevice implements KubeDevice {
     private String name;
@@ -12,8 +12,8 @@ public abstract class AbstractDevice implements KubeDevice {
     private DeviceConfig deviceConfig;
     private String publicIpAddress;
     private String privateIpAddress;
-    private List<Network> connectedNetworks = new ArrayList<>();
-    private List<Device> connectedDevices = new ArrayList<>();
+    private Set<Network> connectedNetworks = new HashSet<>();
+    private Set<Device> connectedDevices = new HashSet<>();
     private Object creator;
     private DeviceConfigPort managementPort;
 
@@ -77,19 +77,19 @@ public abstract class AbstractDevice implements KubeDevice {
         this.privateIpAddress = privateIpAddress;
     }
 
-    public List<Network> getConnectedNetworks() {
+    public Set<Network> getConnectedNetworks() {
         return connectedNetworks;
     }
 
-    public void setConnectedNetworks(List<Network> connectedNetworks) {
+    public void setConnectedNetworks(Set<Network> connectedNetworks) {
         this.connectedNetworks = connectedNetworks;
     }
 
-    public List<Device> getConnectedDevices() {
+    public Set<Device> getConnectedDevices() {
         return connectedDevices;
     }
 
-    public void setConnectedDevices(List<Device> connectedDevices) {
+    public void setConnectedDevices(Set<Device> connectedDevices) {
         this.connectedDevices = connectedDevices;
     }
 

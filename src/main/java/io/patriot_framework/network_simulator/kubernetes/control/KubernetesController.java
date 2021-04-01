@@ -8,12 +8,10 @@ import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.api.model.extensions.IPBlockBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyIngressRuleBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPeerBuilder;
-import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
 import io.patriot_framework.network.simulator.api.model.network.Network;
-import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
-import io.patriot_framework.network_simulator.kubernetes.crd.builders.PortBuilder;
+import io.patriot_framework.network_simulator.kubernetes.control.utils.ConnectionUtils;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
@@ -22,7 +20,6 @@ import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManag
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -102,8 +99,8 @@ public class KubernetesController implements Controller {
         DeviceCrd firstCrd = kubernetesManager.deviceCrd().get(device.getName());
         DeviceCrd secondCrd = kubernetesManager.deviceCrd().get(device2.getName());
 
-        connectDevices(firstCrd, secondCrd);
-        connectDevices(secondCrd, firstCrd);
+        ConnectionUtils.connectDevices(firstCrd, secondCrd);
+        ConnectionUtils.connectDevices(secondCrd, firstCrd);
 
         kubernetesManager.deviceCrd().update(firstCrd);
         kubernetesManager.deviceCrd().update(secondCrd);
@@ -115,32 +112,33 @@ public class KubernetesController implements Controller {
         NetworkCrd firstCrd = kubernetesManager.networkCrd().get(network.getName());
         NetworkCrd secondCrd = kubernetesManager.networkCrd().get(network2.getName());
 
-        connectNetworks(firstCrd, secondCrd);
-        connectNetworks(secondCrd, firstCrd);
+        ConnectionUtils.connectNetworks(firstCrd, secondCrd);
+        ConnectionUtils.connectNetworks(secondCrd, firstCrd);
 
         kubernetesManager.networkCrd().update(firstCrd);
         kubernetesManager.networkCrd().update(secondCrd);
     }
 
     @Override
-    public void connectDeviceToNetwork(KubeDevice device, Network network) {
+    public void connectDeviceToNetworkOneWay(KubeDevice source, Network target) {
 
     }
 
     @Override
-    public void connectDeviceToNetwork(KubeDevice device, Network network, boolean canSee, boolean isSeen) {
+    public void connectDeviceToNetworkBothWays(KubeDevice device, Network network) {
 
     }
 
     @Override
-    public void connectNetworkToDevice(Network network, KubeDevice device) {
+    public void connectNetworkToDeviceOneWay(Network source, KubeDevice target) {
 
     }
 
     @Override
-    public void connectNetworkToDevice(Network network, KubeDevice device, boolean canSee, boolean isSeen) {
+    public void connectNetworkToDeviceBothWays(Network network, KubeDevice device) {
 
     }
+
 
     private void updateDeviceInformationFromKubernetes(KubeDevice device, DeviceCrd deviceCrd) {
         Pod pod = kubernetesManager.getDevicePod(deviceCrd);
@@ -181,53 +179,4 @@ public class KubernetesController implements Controller {
         existingNP.getEgress().addAll(networkPolicySpec.getEgress());
         existingNP.getIngress().addAll(networkPolicySpec.getIngress());
     }
-
-    private void connectNetworks(NetworkCrd source, NetworkCrd target) {
-        connectNetworks(source, target, new ArrayList<>(), new ArrayList<>());
-    }
-
-    private void connectNetworks(NetworkCrd source, NetworkCrd target,
-                                 List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
-        source.getSpec()
-                .getNetworkEgressPorts()
-                .add(buildPorts(null,
-                        target.getMetadata().getName(),
-                        targetPorts));
-        target.getSpec()
-                .getNetworkIngressPorts()
-                .add(buildPorts(null,
-                        source.getMetadata().getName(),
-                        sourcePorts));
-    }
-
-
-    private void connectDevices(DeviceCrd source, DeviceCrd target) {
-        connectDevices(source, target, new ArrayList<>(), new ArrayList<>());
-    }
-
-
-    private void connectDevices(DeviceCrd source, DeviceCrd target,
-                                List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
-        source.getSpec()
-                .getDeviceEgressPorts()
-                .add(buildPorts(target.getMetadata().getName(),
-                        target.getSpec().getNetworkName(),
-                        targetPorts));
-        target.getSpec()
-                .getDeviceIngressPorts()
-                .add(buildPorts(source.getMetadata().getName(),
-                        source.getSpec().getNetworkName(),
-                        sourcePorts));
-    }
-
-
-    private Ports buildPorts(String deviceName, String networkName, List<NetworkPolicyPort> targetPorts) {
-        return new PortBuilder()
-                .withDeviceName(deviceName)
-                .withNetworkName(networkName)
-                .withNetworkPolicyPorts(targetPorts)
-                .build();
-    }
-
-
 }

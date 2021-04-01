@@ -21,11 +21,11 @@ public interface Controller {
 
     void connectNetworksBothWays(Network network, Network network2);
 
-    void connectDeviceToNetwork(KubeDevice device, Network network);
+    void connectDeviceToNetworkOneWay(KubeDevice source, Network target);
 
-    void connectDeviceToNetwork(KubeDevice device, Network network, boolean canSee, boolean isSeen);
+    void connectDeviceToNetworkBothWays(KubeDevice device, Network network);
 
-    void connectNetworkToDevice(Network network, KubeDevice device);
+    void connectNetworkToDeviceOneWay(Network source, KubeDevice target);
 
-    void connectNetworkToDevice(Network network, KubeDevice device, boolean canSee, boolean isSeen);
+    void connectNetworkToDeviceBothWays(Network network, KubeDevice device);
 }
