@@ -11,12 +11,32 @@ import java.util.List;
 
 public class ConnectionUtils {
 
+    public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target) {
+        connectDeviceToNetwork(source, target, new ArrayList<>(), new ArrayList<>());
+    }
+
+    public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target,
+                                              List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+        source.getSpec()
+                .getDeviceEgressPorts()
+                .add(buildPorts(null,
+                        target.getMetadata().getName(),
+                        targetPorts));
+
+        target.getSpec()
+                .getNetworkIngressPorts()
+                .add(buildPorts(source.getMetadata().getName(),
+                        source.getSpec().getNetworkName(),
+                        sourcePorts));
+    }
+
+
     public static void connectNetworks(NetworkCrd source, NetworkCrd target) {
         connectNetworks(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
     public static void connectNetworks(NetworkCrd source, NetworkCrd target,
-                                 List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+                                       List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
                 .getNetworkEgressPorts()
                 .add(buildPorts(null,
@@ -36,7 +56,7 @@ public class ConnectionUtils {
 
 
     public static void connectDevices(DeviceCrd source, DeviceCrd target,
-                                List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
+                                      List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
                 .getDeviceEgressPorts()
                 .add(buildPorts(target.getMetadata().getName(),
