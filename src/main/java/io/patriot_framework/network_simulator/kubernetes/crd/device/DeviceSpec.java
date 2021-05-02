@@ -8,7 +8,7 @@ import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.PodSpec;
 import io.fabric8.kubernetes.api.model.ServiceSpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
-import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
+import io.patriot_framework.network_simulator.kubernetes.crd.ConnectionRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +24,12 @@ public class DeviceSpec implements KubernetesResource {
     private PodSpec podSpec;
     @JsonProperty("serviceSpec")
     private ServiceSpec serviceSpec;
-    @JsonProperty("deviceIngressPorts")
+    @JsonProperty("deviceIngressRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Ports> deviceIngressPorts = new ArrayList<>();
-    @JsonProperty("deviceEgressPorts")
+    private List<ConnectionRules> deviceIngressRules = new ArrayList<>();
+    @JsonProperty("deviceEgressRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Ports> deviceEgressPorts = new ArrayList<>();
+    private List<ConnectionRules> deviceEgressRules = new ArrayList<>();
     @JsonProperty("enableInternet")
     private boolean enableInternet;
     @JsonProperty("networkPolicySpec")
@@ -60,20 +60,20 @@ public class DeviceSpec implements KubernetesResource {
         this.serviceSpec = serviceSpec;
     }
 
-    public List<Ports> getDeviceIngressPorts() {
-        return deviceIngressPorts;
+    public List<ConnectionRules> getDeviceIngressRules() {
+        return deviceIngressRules;
     }
 
-    public void setDeviceIngressPorts(List<Ports> deviceIngressPorts) {
-        this.deviceIngressPorts = deviceIngressPorts;
+    public void setDeviceIngressRules(List<ConnectionRules> deviceIngressRules) {
+        this.deviceIngressRules = deviceIngressRules;
     }
 
-    public List<Ports> getDeviceEgressPorts() {
-        return deviceEgressPorts;
+    public List<ConnectionRules> getDeviceEgressRules() {
+        return deviceEgressRules;
     }
 
-    public void setDeviceEgressPorts(List<Ports> deviceEgressPorts) {
-        this.deviceEgressPorts = deviceEgressPorts;
+    public void setDeviceEgressRules(List<ConnectionRules> deviceEgressRules) {
+        this.deviceEgressRules = deviceEgressRules;
     }
 
     public boolean isEnableInternet() {

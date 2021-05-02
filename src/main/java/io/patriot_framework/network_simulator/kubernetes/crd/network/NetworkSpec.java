@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
-import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
+import io.patriot_framework.network_simulator.kubernetes.crd.ConnectionRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +19,12 @@ public class NetworkSpec implements KubernetesResource {
     private boolean disableInsideIngressTraffic;
     @JsonProperty("disableInsideEgressTraffic")
     private boolean disableInsideEgressTraffic;
-    @JsonProperty("networkIngressPorts")
+    @JsonProperty("networkIngressRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Ports> networkIngressPorts = new ArrayList<>();
-    @JsonProperty("networkEgressPorts")
+    private List<ConnectionRules> networkIngressRules = new ArrayList<>();
+    @JsonProperty("networkEgressRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<Ports> networkEgressPorts = new ArrayList<>();
+    private List<ConnectionRules> networkEgressRules = new ArrayList<>();
 
 
     public boolean isDisableInsideIngressTraffic() {
@@ -43,19 +43,19 @@ public class NetworkSpec implements KubernetesResource {
         this.disableInsideEgressTraffic = disableInsideEgressTraffic;
     }
 
-    public List<Ports> getNetworkIngressPorts() {
-        return networkIngressPorts;
+    public List<ConnectionRules> getNetworkIngressRules() {
+        return networkIngressRules;
     }
 
-    public void setNetworkIngressPorts(List<Ports> networkIngressPorts) {
-        this.networkIngressPorts = networkIngressPorts;
+    public void setNetworkIngressRules(List<ConnectionRules> networkIngressRules) {
+        this.networkIngressRules = networkIngressRules;
     }
 
-    public List<Ports> getNetworkEgressPorts() {
-        return networkEgressPorts;
+    public List<ConnectionRules> getNetworkEgressRules() {
+        return networkEgressRules;
     }
 
-    public void setNetworkEgressPorts(List<Ports> networkEgressPorts) {
-        this.networkEgressPorts = networkEgressPorts;
+    public void setNetworkEgressRules(List<ConnectionRules> networkEgressRules) {
+        this.networkEgressRules = networkEgressRules;
     }
 }

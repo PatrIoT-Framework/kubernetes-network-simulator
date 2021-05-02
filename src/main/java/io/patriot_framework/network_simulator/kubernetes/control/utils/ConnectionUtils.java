@@ -1,7 +1,7 @@
 package io.patriot_framework.network_simulator.kubernetes.control.utils;
 
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
-import io.patriot_framework.network_simulator.kubernetes.crd.Ports;
+import io.patriot_framework.network_simulator.kubernetes.crd.ConnectionRules;
 import io.patriot_framework.network_simulator.kubernetes.crd.builders.PortBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
@@ -18,13 +18,13 @@ public class ConnectionUtils {
     public static void connectNetworkToDevice(NetworkCrd source, DeviceCrd target,
                                               List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
-                .getNetworkEgressPorts()
+                .getNetworkEgressRules()
                 .add(buildPorts(target.getMetadata().getName(),
                         target.getSpec().getNetworkName(),
                         targetPorts));
 
         target.getSpec()
-                .getDeviceIngressPorts()
+                .getDeviceIngressRules()
                 .add(buildPorts(null,
                         source.getMetadata().getName(),
                         sourcePorts));
@@ -38,13 +38,13 @@ public class ConnectionUtils {
     public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target,
                                               List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
-                .getDeviceEgressPorts()
+                .getDeviceEgressRules()
                 .add(buildPorts(null,
                         target.getMetadata().getName(),
                         targetPorts));
 
         target.getSpec()
-                .getNetworkIngressPorts()
+                .getNetworkIngressRules()
                 .add(buildPorts(source.getMetadata().getName(),
                         source.getSpec().getNetworkName(),
                         sourcePorts));
@@ -58,12 +58,12 @@ public class ConnectionUtils {
     public static void connectNetworks(NetworkCrd source, NetworkCrd target,
                                        List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
-                .getNetworkEgressPorts()
+                .getNetworkEgressRules()
                 .add(buildPorts(null,
                         target.getMetadata().getName(),
                         targetPorts));
         target.getSpec()
-                .getNetworkIngressPorts()
+                .getNetworkIngressRules()
                 .add(buildPorts(null,
                         source.getMetadata().getName(),
                         sourcePorts));
@@ -78,19 +78,19 @@ public class ConnectionUtils {
     public static void connectDevices(DeviceCrd source, DeviceCrd target,
                                       List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
-                .getDeviceEgressPorts()
+                .getDeviceEgressRules()
                 .add(buildPorts(target.getMetadata().getName(),
                         target.getSpec().getNetworkName(),
                         targetPorts));
         target.getSpec()
-                .getDeviceIngressPorts()
+                .getDeviceIngressRules()
                 .add(buildPorts(source.getMetadata().getName(),
                         source.getSpec().getNetworkName(),
                         sourcePorts));
     }
 
 
-    private static Ports buildPorts(String deviceName, String networkName, List<NetworkPolicyPort> targetPorts) {
+    private static ConnectionRules buildPorts(String deviceName, String networkName, List<NetworkPolicyPort> targetPorts) {
         return new PortBuilder()
                 .withDeviceName(deviceName)
                 .withNetworkName(networkName)

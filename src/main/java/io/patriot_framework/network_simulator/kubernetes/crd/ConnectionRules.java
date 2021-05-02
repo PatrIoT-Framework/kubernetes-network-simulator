@@ -10,7 +10,7 @@ import java.util.List;
 
 @JsonDeserialize()
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Ports {
+public class ConnectionRules {
     @JsonProperty("deviceName")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String deviceName;
