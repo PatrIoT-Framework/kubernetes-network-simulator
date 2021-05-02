@@ -13,6 +13,7 @@ import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
 import io.patriot_framework.network_simulator.kubernetes.control.utils.ConnectionUtils;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
+import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkSpec;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManager;
@@ -35,7 +36,12 @@ public class KubernetesController implements Controller {
     @Override
     public void createNetwork(KubeNetwork network) {
         NetworkCrd networkCrd = new NetworkCrd();
+        NetworkSpec spec = new NetworkSpec();
+        spec.setDisableInsideEgressTraffic(network.isDisableInsideEgressTraffic());
+        spec.setDisableInsideIngressTraffic(network.isDisableInsideIngressTraffic());
+
         networkCrd.getMetadata().setName(network.getName());
+        networkCrd.setSpec(spec);
         kubernetesManager.networkCrd().create(networkCrd);
     }
 
