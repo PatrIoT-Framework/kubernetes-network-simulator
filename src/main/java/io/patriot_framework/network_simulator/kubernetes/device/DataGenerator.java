@@ -3,7 +3,7 @@ package io.patriot_framework.network_simulator.kubernetes.device;
 import io.patriot_framework.generator.device.Device;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
-public class DataGenerator extends AbstractDevice {
+public class DataGenerator extends KubeDevice {
     private io.patriot_framework.generator.device.Device device;
     public static final DeviceConfigPort DEFAULT_MANAGEMENT_PORT = new DeviceConfigPort(5683, "UDP");
 

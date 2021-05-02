@@ -11,7 +11,6 @@ import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfig;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -2,31 +2,72 @@ package io.patriot_framework.network_simulator.kubernetes.device;
 
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
-public interface KubeDevice {
+public abstract class KubeDevice {
+    private String name;
+    private KubeNetwork network;
+    private DeviceConfig deviceConfig;
+    private String publicIpAddress;
+    private String privateIpAddress;
+    private DeviceConfigPort managementPort;
 
-    String getName();
+    public KubeDevice(String name, KubeNetwork network) {
+        this.name = name;
+        this.network = network;
+    }
 
-    void setName(String name);
+    public KubeDevice(String name, KubeNetwork network, DeviceConfig deviceConfig) {
+        this(name, network);
+        this.deviceConfig = deviceConfig;
+    }
 
-    KubeNetwork getNetwork();
+    public String getName() {
+        return name;
+    }
 
-    void setNetwork(KubeNetwork network);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    DeviceConfig getDeviceConfig();
+    public KubeNetwork getNetwork() {
+        return network;
+    }
 
-    void setDeviceConfig(DeviceConfig deviceConfig);
+    public void setNetwork(KubeNetwork network) {
+        this.network = network;
+    }
 
-    String getPublicIpAddress();
+    public DeviceConfig getDeviceConfig() {
+        return deviceConfig;
+    }
 
-    void setPublicIpAddress(String publicIpAddress);
+    public void setDeviceConfig(DeviceConfig deviceConfig) {
+        this.deviceConfig = deviceConfig;
+    }
 
-    String getPrivateIpAddress();
+    public String getPublicIpAddress() {
+        return publicIpAddress;
+    }
 
-    void setPrivateIpAddress(String privateIpAddress);
+    public void setPublicIpAddress(String publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
+    }
 
-    DeviceConfigPort getManagementPort();
+    public String getPrivateIpAddress() {
+        return privateIpAddress;
+    }
 
-    void setManagementPort(DeviceConfigPort managementPort);
+    public void setPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
+    }
 
-    void finalizeConfiguration();
+    public DeviceConfigPort getManagementPort() {
+        return managementPort;
+    }
+
+    public void setManagementPort(DeviceConfigPort managementPort) {
+        this.managementPort = managementPort;
+    }
+
+    public abstract void finalizeConfiguration();
 }
+

@@ -3,7 +3,7 @@ package io.patriot_framework.network_simulator.kubernetes.device;
 
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
-public class Application extends AbstractDevice {
+public class Application extends KubeDevice {
     public static final DeviceConfigPort DEFAULT_MANAGEMENT_PORT = new DeviceConfigPort(8080);
 
     public Application(String name, KubeNetwork network) {
