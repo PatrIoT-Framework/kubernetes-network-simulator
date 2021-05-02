@@ -1,13 +1,13 @@
 package io.patriot_framework.network_simulator.kubernetes.control;
 
-import io.patriot_framework.network.simulator.api.model.network.Network;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
+import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
 public interface Controller {
 
-    void createNetwork(Network network);
+    void createNetwork(KubeNetwork network);
 
-    void destroyNetwork(Network network);
+    void destroyNetwork(KubeNetwork network);
 
     void deployDevice(KubeDevice device);
 
@@ -19,11 +19,11 @@ public interface Controller {
 
     void connectDevicesBothWays(KubeDevice device, KubeDevice device2);
 
-    void connectNetworksBothWays(Network network, Network network2);
+    void connectNetworksBothWays(KubeNetwork network, KubeNetwork network2);
 
-    void connectDeviceToNetworkOneWay(KubeDevice device, Network network);
+    void connectDeviceToNetworkOneWay(KubeDevice device, KubeNetwork network);
 
-    void connectDeviceToNetworkBothWays(KubeDevice device, Network network);
+    void connectDeviceToNetworkBothWays(KubeDevice device, KubeNetwork network);
 
-    void connectNetworkToDeviceOneWay(Network source, KubeDevice target);
+    void connectNetworkToDeviceOneWay(KubeNetwork source, KubeDevice target);
 }

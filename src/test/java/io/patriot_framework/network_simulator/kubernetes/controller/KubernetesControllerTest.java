@@ -5,12 +5,10 @@ import io.patriot_framework.generator.dataFeed.DataFeed;
 import io.patriot_framework.generator.dataFeed.NormalDistVariateDataFeed;
 import io.patriot_framework.generator.device.Device;
 import io.patriot_framework.generator.device.impl.basicSensors.Thermometer;
-import io.patriot_framework.network.simulator.api.model.network.Network;
 import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 import org.eclipse.californium.elements.exception.ConnectorException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -23,7 +21,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
 
     @Test
     public void createDataGeneratorDeviceTest() throws ConnectorException, IOException {
-        Network network = new KubeNetwork(NETWORK_NAME);
+        KubeNetwork network = new KubeNetwork(NETWORK_NAME);
         controller.createNetwork(network);
 
         DataFeed dataFeed = new NormalDistVariateDataFeed(18, 2);

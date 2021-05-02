@@ -4,7 +4,6 @@ import io.patriot_framework.generator.dataFeed.DataFeed;
 import io.patriot_framework.generator.dataFeed.NormalDistVariateDataFeed;
 import io.patriot_framework.generator.device.Device;
 import io.patriot_framework.generator.device.impl.basicSensors.Thermometer;
-import io.patriot_framework.network.simulator.api.model.network.Network;
 import io.patriot_framework.network_simulator.kubernetes.HttpClient;
 import io.patriot_framework.network_simulator.kubernetes.Utils;
 import io.patriot_framework.network_simulator.kubernetes.device.Application;
@@ -12,6 +11,7 @@ import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfig;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NetworkRestrictionTest extends AbstractControllerTest {
-    private Network deviceNetwork;
+    private KubeNetwork deviceNetwork;
     private KubeDevice kubeDevice;
     private HttpClient httpClient = new HttpClient();
 
@@ -41,13 +41,15 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
 
     @Test
-    public void deviceCanSeeDeviceInsideNetworkTest() throws IOException {
+    public void deviceCanSeeDeviceInsideNetworkTest() throws IOException, InterruptedException {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app", deviceNetwork, deviceConfig);
 
         controller.deployDevice(app);
 
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
+
+        Thread.sleep(5000);
 
         String hostname = Utils.httpTestingHostname(app, "/get");
         String result = httpClient.get(hostname,
@@ -59,8 +61,8 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
     }
 
     @Test
-    public void deviceCanSeeDeviceInOtherNetwork() throws IOException {
-        Network anotherNetwork = new KubeNetwork("another-network");
+    public void deviceCanSeeDeviceInOtherNetwork() throws IOException, InterruptedException {
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -69,6 +71,8 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
 
         controller.connectDevicesBothWays(kubeDevice, app);
+
+        Thread.sleep(5000);
 
         String hostname = Utils.httpTestingHostname(app, "/get");
         String result = httpClient.get(hostname,
@@ -82,7 +86,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceCanNotSeeDeviceInOtherNetwork() {
-        Network anotherNetwork = new KubeNetwork("another-network1");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network1");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -104,7 +108,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void networksCanSeeToEachOther() throws IOException, InterruptedException {
-        Network anotherNetwork = new KubeNetwork("another-network12");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network12");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -127,14 +131,13 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void networkWontSeeEachOther() throws InterruptedException, IOException {
-        Network anotherNetwork = new KubeNetwork("another-network13");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network13");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app4", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
-
 
 
         Thread.sleep(5000);
@@ -150,7 +153,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceCanSeeOneWay() throws IOException, InterruptedException {
-        Network anotherNetwork = new KubeNetwork("another-network14");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network14");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -173,7 +176,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceWontSeeOneWay() throws IOException, InterruptedException {
-        Network anotherNetwork = new KubeNetwork("another-network14");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network14");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -197,7 +200,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceCanSeeInsideNetwork() throws IOException, InterruptedException {
-        Network anotherNetwork = new KubeNetwork("another-network15");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network15");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -221,7 +224,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void deviceCanSeeInsideNetworkBothWays() throws InterruptedException, IOException {
-        Network anotherNetwork = new KubeNetwork("another-network16");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network16");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
@@ -244,7 +247,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
     @Test
     public void networkCanSeeDevice() throws InterruptedException, IOException {
-        Network anotherNetwork = new KubeNetwork("another-network17");
+        KubeNetwork anotherNetwork = new KubeNetwork("another-network17");
         controller.createNetwork(anotherNetwork);
 
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);

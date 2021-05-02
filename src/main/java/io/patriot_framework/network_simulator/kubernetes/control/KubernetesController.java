@@ -10,13 +10,13 @@ import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyIngressRuleBuilde
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPeerBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
-import io.patriot_framework.network.simulator.api.model.network.Network;
 import io.patriot_framework.network_simulator.kubernetes.control.utils.ConnectionUtils;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManager;
+import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -33,14 +33,14 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void createNetwork(Network network) {
+    public void createNetwork(KubeNetwork network) {
         NetworkCrd networkCrd = new NetworkCrd();
         networkCrd.getMetadata().setName(network.getName());
         kubernetesManager.networkCrd().create(networkCrd);
     }
 
     @Override
-    public void destroyNetwork(Network network) {
+    public void destroyNetwork(KubeNetwork network) {
         kubernetesManager.networkCrd().delete(network.getName());
 
     }
@@ -114,7 +114,7 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void connectNetworksBothWays(Network network, Network network2) {
+    public void connectNetworksBothWays(KubeNetwork network, KubeNetwork network2) {
         NetworkCrd firstCrd = kubernetesManager.networkCrd().get(network.getName());
         NetworkCrd secondCrd = kubernetesManager.networkCrd().get(network2.getName());
 
@@ -126,7 +126,7 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void connectDeviceToNetworkOneWay(KubeDevice device, Network network) {
+    public void connectDeviceToNetworkOneWay(KubeDevice device, KubeNetwork network) {
         DeviceCrd deviceCrd = kubernetesManager.deviceCrd().get(device.getName());
         NetworkCrd networkCrd = kubernetesManager.networkCrd().get(network.getName());
 
@@ -137,7 +137,7 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void connectDeviceToNetworkBothWays(KubeDevice device, Network network) {
+    public void connectDeviceToNetworkBothWays(KubeDevice device, KubeNetwork network) {
         DeviceCrd deviceCrd = kubernetesManager.deviceCrd().get(device.getName());
         NetworkCrd networkCrd = kubernetesManager.networkCrd().get(network.getName());
 
@@ -149,7 +149,7 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void connectNetworkToDeviceOneWay(Network source, KubeDevice target) {
+    public void connectNetworkToDeviceOneWay(KubeNetwork source, KubeDevice target) {
         NetworkCrd networkCrd = kubernetesManager.networkCrd().get(source.getName());
         DeviceCrd deviceCrd = kubernetesManager.deviceCrd().get(target.getName());
 
@@ -158,7 +158,6 @@ public class KubernetesController implements Controller {
         kubernetesManager.networkCrd().update(networkCrd);
         kubernetesManager.deviceCrd().update(deviceCrd);
     }
-
 
 
     private void updateDeviceInformationFromKubernetes(KubeDevice device, DeviceCrd deviceCrd) {

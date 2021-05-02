@@ -25,8 +25,9 @@ public abstract class AbstractControllerTest {
     }
 
     @AfterEach
-    public void cleanUp() {
+    public void cleanUp() throws InterruptedException {
         manager.deviceCrd().deleteAll();
         manager.networkCrd().deleteAll();
+        Thread.sleep(90000);
     }
 }

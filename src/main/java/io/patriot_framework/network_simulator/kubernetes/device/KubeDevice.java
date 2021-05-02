@@ -1,6 +1,6 @@
 package io.patriot_framework.network_simulator.kubernetes.device;
 
-import io.patriot_framework.network.simulator.api.model.network.Network;
+import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
 public interface KubeDevice {
 
@@ -8,9 +8,9 @@ public interface KubeDevice {
 
     void setName(String name);
 
-    Network getNetwork();
+    KubeNetwork getNetwork();
 
-    void setNetwork(Network network);
+    void setNetwork(KubeNetwork network);
 
     DeviceConfig getDeviceConfig();
 

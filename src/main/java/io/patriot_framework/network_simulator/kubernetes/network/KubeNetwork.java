@@ -1,14 +1,18 @@
 package io.patriot_framework.network_simulator.kubernetes.network;
 
-import io.patriot_framework.network.simulator.api.model.network.Network;
 
-public class KubeNetwork extends Network {
+public class KubeNetwork {
+    private String name;
+
     public KubeNetwork(String name) {
-        setName(name);
+        this.name = name;
     }
 
-    @Override
-    public String getCreator() {
-        return null;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

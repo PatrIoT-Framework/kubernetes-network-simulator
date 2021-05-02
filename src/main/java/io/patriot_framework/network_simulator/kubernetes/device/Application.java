@@ -1,15 +1,16 @@
 package io.patriot_framework.network_simulator.kubernetes.device;
 
-import io.patriot_framework.network.simulator.api.model.network.Network;
+
+import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
 public class Application extends AbstractDevice {
     public static final DeviceConfigPort DEFAULT_MANAGEMENT_PORT = new DeviceConfigPort(8080);
 
-    public Application(String name, Network network) {
+    public Application(String name, KubeNetwork network) {
         super(name, network);
     }
 
-    public Application(String name, Network network, DeviceConfig deviceConfig) {
+    public Application(String name, KubeNetwork network, DeviceConfig deviceConfig) {
         super(name, network, deviceConfig);
     }
 
