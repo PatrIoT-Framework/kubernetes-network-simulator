@@ -10,6 +10,7 @@ import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyIngressRuleBuilde
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPeerBuilder;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpec;
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicySpecBuilder;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.patriot_framework.network_simulator.kubernetes.control.utils.ConnectionUtils;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
@@ -31,6 +32,10 @@ public class KubernetesController implements Controller {
 
     public KubernetesController(KubernetesManager kubernetesManager) {
         this.kubernetesManager = kubernetesManager;
+    }
+
+    public KubernetesController(KubernetesClient client) {
+        this.kubernetesManager = new KubernetesManager(client);
     }
 
     @Override
