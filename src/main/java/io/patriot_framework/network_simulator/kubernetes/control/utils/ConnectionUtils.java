@@ -2,7 +2,7 @@ package io.patriot_framework.network_simulator.kubernetes.control.utils;
 
 import io.fabric8.kubernetes.api.model.extensions.NetworkPolicyPort;
 import io.patriot_framework.network_simulator.kubernetes.crd.ConnectionRules;
-import io.patriot_framework.network_simulator.kubernetes.crd.builders.PortBuilder;
+import io.patriot_framework.network_simulator.kubernetes.crd.builders.ConnectionRulesBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 
@@ -91,7 +91,7 @@ public class ConnectionUtils {
 
 
     private static ConnectionRules buildPorts(String deviceName, String networkName, List<NetworkPolicyPort> targetPorts) {
-        return new PortBuilder()
+        return new ConnectionRulesBuilder()
                 .withDeviceName(deviceName)
                 .withNetworkName(networkName)
                 .withNetworkPolicyPorts(targetPorts)

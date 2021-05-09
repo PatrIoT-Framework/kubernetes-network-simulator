@@ -5,29 +5,29 @@ import io.patriot_framework.network_simulator.kubernetes.crd.ConnectionRules;
 
 import java.util.List;
 
-public class PortBuilder {
+public class ConnectionRulesBuilder {
     private ConnectionRules connectionRules = new ConnectionRules();
 
     public ConnectionRules build() {
         return connectionRules;
     }
 
-    public PortBuilder withDeviceName(String deviceName) {
+    public ConnectionRulesBuilder withDeviceName(String deviceName) {
         connectionRules.setDeviceName(deviceName);
         return this;
     }
 
-    public PortBuilder withNetworkName(String networkName) {
+    public ConnectionRulesBuilder withNetworkName(String networkName) {
         connectionRules.setNetworkName(networkName);
         return this;
     }
 
-    public PortBuilder withNetworkPolicyPorts(List<NetworkPolicyPort> networkPolicyPorts) {
+    public ConnectionRulesBuilder withNetworkPolicyPorts(List<NetworkPolicyPort> networkPolicyPorts) {
         connectionRules.setNetworkPolicyPorts(networkPolicyPorts);
         return this;
     }
 
-    public PortBuilder withNetworkPolicyPort(NetworkPolicyPort networkPolicyPort) {
+    public ConnectionRulesBuilder withNetworkPolicyPort(NetworkPolicyPort networkPolicyPort) {
         connectionRules.getNetworkPolicyPorts().add(networkPolicyPort);
         return this;
     }
