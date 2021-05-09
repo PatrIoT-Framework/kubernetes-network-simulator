@@ -2,7 +2,6 @@ package io.patriot_framework.network_simulator.kubernetes.device;
 
 import io.patriot_framework.generator.device.Device;
 import io.patriot_framework.generator.device.active.Active;
-import io.patriot_framework.generator.device.active.ActiveDevice;
 import io.patriot_framework.generator.utils.JSONSerializer;
 
 public class DataGeneratorConverter {
@@ -28,7 +27,9 @@ public class DataGeneratorConverter {
     }
 
     private static void fillDeviceConfig(DeviceConfig deviceConfig) {
-        deviceConfig.setImage(DEFAULT_DATA_GENERATOR_RUNNER_IMAGE);
+        if (deviceConfig.getImage() == null) {
+            deviceConfig.setImage(DEFAULT_DATA_GENERATOR_RUNNER_IMAGE);
+        }
         deviceConfig.addPort(new DeviceConfigPort(5683, "UDP"));
         deviceConfig.setManagementPort(new DeviceConfigPort(5683, "UDP"));
     }
