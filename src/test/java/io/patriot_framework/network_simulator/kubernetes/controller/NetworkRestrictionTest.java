@@ -4,21 +4,19 @@ import io.patriot_framework.generator.dataFeed.DataFeed;
 import io.patriot_framework.generator.dataFeed.NormalDistVariateDataFeed;
 import io.patriot_framework.generator.device.Device;
 import io.patriot_framework.generator.device.impl.basicSensors.Thermometer;
-import io.patriot_framework.network_simulator.kubernetes.utils.HttpClient;
-import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import io.patriot_framework.network_simulator.kubernetes.device.Application;
 import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfig;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
+import io.patriot_framework.network_simulator.kubernetes.utils.HttpClient;
+import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NetworkRestrictionTest extends AbstractControllerTest {
@@ -84,7 +82,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
 
     @Test
-    public void deviceCanNotSeeDeviceInOtherNetwork() {
+    public void deviceCanNotSeeDeviceInOtherNetwork() throws IOException, InterruptedException {
         KubeNetwork anotherNetwork = new KubeNetwork("another-network1");
         controller.createNetwork(anotherNetwork);
 
@@ -93,15 +91,17 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         controller.deployDevice(app);
         controller.deviceIsSeenBy(app, "192.168.49.1/24");
 
+        Thread.sleep(10000);
 
         String hostname = Utils.httpTestingHostname(app, "/get");
 
-        assertThrows(SocketTimeoutException.class, () -> {
-            httpClient.get(hostname,
-                    kubeDevice.getPrivateIpAddress(),
-                    5683,
-                    "/sensor/simpleThermometer");
-        });
+        String response = httpClient.get(hostname,
+                kubeDevice.getPrivateIpAddress(),
+                5683,
+                "/sensor/simpleThermometer");
+
+        assertTrue(response.contains("\"status\":404"));
+        assertTrue(response.contains("\"error\":\"Not Found\""));
     }
 
 
