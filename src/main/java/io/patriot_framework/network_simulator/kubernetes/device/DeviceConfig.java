@@ -12,6 +12,7 @@ public class DeviceConfig {
     private Map<String, String> filesConfiguration = new HashMap<>();
     private String fileConfigurationPrefixPath = "/etc/config/";
     private DeviceConfigPort managementPort;
+    private boolean enableInternet;
 
     public DeviceConfig() {
     }
@@ -84,5 +85,13 @@ public class DeviceConfig {
 
     public void setManagementPort(DeviceConfigPort managementPort) {
         this.managementPort = managementPort;
+    }
+
+    public boolean isEnableInternet() {
+        return enableInternet;
+    }
+
+    public void setEnableInternet(boolean enableInternet) {
+        this.enableInternet = enableInternet;
     }
 }

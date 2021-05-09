@@ -1,4 +1,4 @@
-package io.patriot_framework.network_simulator.kubernetes;
+package io.patriot_framework.network_simulator.kubernetes.utils;
 
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.client.KubernetesClient;

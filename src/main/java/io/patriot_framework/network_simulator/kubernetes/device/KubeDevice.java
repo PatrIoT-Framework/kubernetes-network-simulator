@@ -5,7 +5,7 @@ import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 public abstract class KubeDevice {
     private String name;
     private KubeNetwork network;
-    private DeviceConfig deviceConfig;
+    private DeviceConfig deviceConfig = new DeviceConfig();
     private String publicIpAddress;
     private String privateIpAddress;
     private DeviceConfigPort managementPort;

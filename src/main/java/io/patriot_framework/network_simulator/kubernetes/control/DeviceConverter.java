@@ -49,6 +49,9 @@ public class DeviceConverter {
                         .getName())
                 .withPodSpec(deviceToPodSpec(device, configMap))
                 .withServiceSpec(deviceToServiceSpec(device))
+                .withEnabledInternet(device
+                        .getDeviceConfig()
+                        .isEnableInternet())
                 .build();
     }
 

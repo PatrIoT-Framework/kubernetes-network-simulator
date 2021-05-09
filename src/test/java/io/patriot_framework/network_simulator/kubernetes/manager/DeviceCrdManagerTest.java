@@ -6,7 +6,7 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.ServicePortBuilder;
 import io.fabric8.kubernetes.api.model.ServiceSpecBuilder;
-import io.patriot_framework.network_simulator.kubernetes.Utils;
+import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.builders.DeviceCrdBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.builders.DeviceSpecBuilder;

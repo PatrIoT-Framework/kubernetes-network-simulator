@@ -1,6 +1,6 @@
 package io.patriot_framework.network_simulator.kubernetes.manager;
 
-import io.patriot_framework.network_simulator.kubernetes.Utils;
+import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;

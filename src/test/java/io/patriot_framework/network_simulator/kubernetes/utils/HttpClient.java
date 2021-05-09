@@ -1,4 +1,4 @@
-package io.patriot_framework.network_simulator.kubernetes;
+package io.patriot_framework.network_simulator.kubernetes.utils;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;

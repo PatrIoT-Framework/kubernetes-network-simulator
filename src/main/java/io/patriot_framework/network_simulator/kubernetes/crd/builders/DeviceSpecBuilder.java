@@ -53,5 +53,10 @@ public class DeviceSpecBuilder {
         return this;
     }
 
+    public DeviceSpecBuilder withEnabledInternet(boolean enabledInternet) {
+        deviceSpec.setEnableInternet(enabledInternet);
+        return this;
+    }
+
 
 }
