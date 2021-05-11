@@ -2,6 +2,9 @@ package io.patriot_framework.network_simulator.kubernetes.utils;
 
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 
+/**
+ * Class containing static methods that are used as utils.
+ */
 public class Utils {
     public static final String HTTP_COAP_TESTING_APP_IMAGE = "jsmadis/patriot-http-coap-testing-app:latest";
 
