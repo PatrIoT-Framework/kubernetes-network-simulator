@@ -27,15 +27,27 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Implementation of the Controller interface for kubernetes
+ * Class represents implementation of the Controller,
+ * which is responsible to provide methods to work with simulated network.
  */
 public class KubernetesController implements Controller {
-    private KubernetesManager kubernetesManager;
+    private final KubernetesManager kubernetesManager;
 
+    /**
+     * Constructor for KubernetesController
+     *
+     * @param kubernetesManager KubernetesManager which is used by the controller
+     */
     public KubernetesController(KubernetesManager kubernetesManager) {
         this.kubernetesManager = kubernetesManager;
     }
 
+
+    /**
+     * Constructor for KubernetesController
+     *
+     * @param client KubernetesClient which is used by the controller
+     */
     public KubernetesController(KubernetesClient client) {
         this.kubernetesManager = new KubernetesManager(client);
     }

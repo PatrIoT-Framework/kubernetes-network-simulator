@@ -5,6 +5,9 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Kind;
 import io.fabric8.kubernetes.model.annotation.Version;
 
+/**
+ * Class representing Network custom resource definition
+ */
 @Version(NetworkCrd.VERSION)
 @Group(NetworkCrd.GROUP)
 @Kind(NetworkCrd.KIND)

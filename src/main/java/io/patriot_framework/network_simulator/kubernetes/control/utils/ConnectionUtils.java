@@ -9,12 +9,29 @@ import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class which provides methods used by KubernetesController to create necessary objects.
+ */
 public class ConnectionUtils {
 
+    /**
+     * Connects NetworkCrd to the DeviceCrd
+     *
+     * @param source source NetworkCrd
+     * @param target target DeviceCrd
+     */
     public static void connectNetworkToDevice(NetworkCrd source, DeviceCrd target) {
         connectNetworkToDevice(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
+    /**
+     * Connects NetworkCrd to the DeviceCrd
+     *
+     * @param source      source NetworkCrd
+     * @param target      target DeviceCrd
+     * @param sourcePorts list of the network policy ports
+     * @param targetPorts list of the network policy ports
+     */
     public static void connectNetworkToDevice(NetworkCrd source, DeviceCrd target,
                                               List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
@@ -31,10 +48,24 @@ public class ConnectionUtils {
     }
 
 
+    /**
+     * Connects DeviceCrd to the NetworkCrd
+     *
+     * @param source DeviceCrd
+     * @param target NetworkCrd
+     */
     public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target) {
         connectDeviceToNetwork(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
+    /**
+     * Connects DeviceCrd to the NetworkCrd
+     *
+     * @param source      DeviceCrd
+     * @param target      NetworkCrd
+     * @param sourcePorts list of the network policy ports
+     * @param targetPorts list of the network policy ports
+     */
     public static void connectDeviceToNetwork(DeviceCrd source, NetworkCrd target,
                                               List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
@@ -51,10 +82,24 @@ public class ConnectionUtils {
     }
 
 
+    /**
+     * Connects NetworkCrd to the NetworkCrd
+     *
+     * @param source NetworkCrd
+     * @param target NetworkCrd
+     */
     public static void connectNetworks(NetworkCrd source, NetworkCrd target) {
         connectNetworks(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
+    /**
+     * Connects NetworkCrd to the NetworkCrd
+     *
+     * @param source      NetworkCrd
+     * @param target      NetworkCrd
+     * @param sourcePorts list of the network policy ports
+     * @param targetPorts list of the network policy ports
+     */
     public static void connectNetworks(NetworkCrd source, NetworkCrd target,
                                        List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
@@ -70,11 +115,24 @@ public class ConnectionUtils {
     }
 
 
+    /**
+     * Connects DeviceCrd to the DeviceCrd
+     *
+     * @param source DeviceCrd
+     * @param target DeviceCrd
+     */
     public static void connectDevices(DeviceCrd source, DeviceCrd target) {
         connectDevices(source, target, new ArrayList<>(), new ArrayList<>());
     }
 
-
+    /**
+     * Connects DeviceCrd to the DeviceCrd
+     *
+     * @param source      DeviceCrd
+     * @param target      DeviceCrd
+     * @param sourcePorts list of the network policy ports
+     * @param targetPorts list of the network policy ports
+     */
     public static void connectDevices(DeviceCrd source, DeviceCrd target,
                                       List<NetworkPolicyPort> sourcePorts, List<NetworkPolicyPort> targetPorts) {
         source.getSpec()
