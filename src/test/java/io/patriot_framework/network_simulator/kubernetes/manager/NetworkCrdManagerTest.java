@@ -1,6 +1,5 @@
 package io.patriot_framework.network_simulator.kubernetes.manager;
 
-import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
@@ -33,7 +32,7 @@ public class NetworkCrdManagerTest extends AbstractManagerTest {
 
         Thread.sleep(5000);
 
-        assertNotNull(Utils.getNamespaceByName(kubernetesClient, NETWORK_NAME));
+        assertNotNull(kubernetesClient.namespaces().withName(NETWORK_NAME).get());
     }
 
     @Test
@@ -47,7 +46,7 @@ public class NetworkCrdManagerTest extends AbstractManagerTest {
 
         Thread.sleep(10000);
 
-        assertNull(Utils.getNamespaceByName(kubernetesClient, NETWORK_NAME));
+        assertNull(kubernetesClient.namespaces().withName(NETWORK_NAME).get());
 
         assertNull(kubernetesManager.networkCrd().get(NETWORK_NAME));
     }

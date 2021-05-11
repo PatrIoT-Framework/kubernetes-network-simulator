@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.patriot_framework.network_simulator.kubernetes.control.Controller;
 import io.patriot_framework.network_simulator.kubernetes.control.KubernetesController;
 import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManager;
+import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -16,7 +17,8 @@ public abstract class AbstractControllerTest {
 
     @BeforeAll
     public static void setup() {
-        Config config = new ConfigBuilder().withMasterUrl("https://192.168.49.2:8443").build();
+        String kubernetesUrl = Utils.getKubernetesUrl();
+        Config config = new ConfigBuilder().withMasterUrl(kubernetesUrl).build();
         KubernetesClient client = new DefaultKubernetesClient(config);
         controller = new KubernetesController(new KubernetesManager(client));
         manager = new KubernetesManager(client);

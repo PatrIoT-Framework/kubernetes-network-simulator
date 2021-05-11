@@ -16,6 +16,7 @@ import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 import io.patriot_framework.network_simulator.kubernetes.utils.RequestBin;
+import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
 import org.eclipse.californium.elements.exception.ConnectorException;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +40,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
 
         controller.deployDevice(kubeDevice);
 
-        controller.deviceIsSeenBy(kubeDevice, "192.168.49.1/24");
+        controller.deviceIsSeenBy(kubeDevice, Utils.getLocalIp());
 
         CoapControlClient client = new CoapControlClient(
                 String.format("coap://%s:%s",
@@ -72,16 +73,16 @@ public class KubernetesControllerTest extends AbstractControllerTest {
         controller.deployDevice(kubeDevice);
 
 
-       Thread.sleep(60000);
+        Thread.sleep(60000);
 
-       controller.destroyDevice(kubeDevice);
+        controller.destroyDevice(kubeDevice);
 
-       assertTrue(requestBin
-               .getLatestResults()
-               .stream()
-               .filter(result -> result
-                       .getBody()
-                       .contains("data"))
-               .count() > 4);
+        assertTrue(requestBin
+                .getLatestResults()
+                .stream()
+                .filter(result -> result
+                        .getBody()
+                        .contains("data"))
+                .count() > 4);
     }
 }

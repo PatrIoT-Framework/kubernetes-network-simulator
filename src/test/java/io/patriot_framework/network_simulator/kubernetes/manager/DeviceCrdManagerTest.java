@@ -6,10 +6,9 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.PodSpecBuilder;
 import io.fabric8.kubernetes.api.model.ServicePortBuilder;
 import io.fabric8.kubernetes.api.model.ServiceSpecBuilder;
-import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
-import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.builders.DeviceCrdBuilder;
 import io.patriot_framework.network_simulator.kubernetes.crd.builders.DeviceSpecBuilder;
+import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ public class DeviceCrdManagerTest extends AbstractManagerTest {
         networkCrd.getMetadata().setName(NETWORK_NAME);
         kubernetesManager.networkCrd().create(networkCrd);
         Thread.sleep(5000);
-        assertNotNull(Utils.getNamespaceByName(kubernetesClient, NETWORK_NAME));
+        assertNotNull(kubernetesClient.namespaces().withName(NETWORK_NAME).get());
 
 
         DeviceCrd deviceCrd = new DeviceCrdBuilder()

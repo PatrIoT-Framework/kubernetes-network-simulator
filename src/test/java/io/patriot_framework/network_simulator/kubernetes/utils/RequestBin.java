@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * Class representing request bin object of https://requestbin.io website.
+ * Request bin is used for webhook testing. It provides a service
+ * where we can send HTTP requests, the requests are stored and we can collect them afterwards.
+ */
 public class RequestBin {
     private static final String REQUEST_BIN_URL = "https://requestbin.io";
     private static final String API_SUFFIX = "/api/v1/bins";
@@ -30,11 +35,16 @@ public class RequestBin {
     }
 
 
+    /**
+     * Returns list of received webhooks
+     *
+     * @return List of RequestBinResults
+     */
     public List<RequestBinResult> getLatestResults() throws IOException {
         Request request = new Request
                 .Builder()
                 .get()
-                .url(String.format("%s%s/%s/requests", REQUEST_BIN_URL, API_SUFFIX, name ))
+                .url(String.format("%s%s/%s/requests", REQUEST_BIN_URL, API_SUFFIX, name))
                 .build();
         String responseData;
         try (Response response = client.newCall(request).execute()) {

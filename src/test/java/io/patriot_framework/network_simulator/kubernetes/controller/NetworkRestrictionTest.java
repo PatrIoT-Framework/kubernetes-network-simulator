@@ -44,7 +44,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
 
         controller.deployDevice(app);
 
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         Thread.sleep(5000);
 
@@ -65,7 +65,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app2", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectDevicesBothWays(kubeDevice, app);
 
@@ -89,7 +89,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app3", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         Thread.sleep(10000);
 
@@ -113,7 +113,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app3", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectNetworksBothWays(deviceNetwork, anotherNetwork);
 
@@ -136,7 +136,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app4", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
 
         Thread.sleep(5000);
@@ -158,7 +158,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app5", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectDevicesOneWay(app, kubeDevice);
 
@@ -181,7 +181,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app5", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectDevicesOneWay(kubeDevice, app);
 
@@ -205,7 +205,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app6", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectDeviceToNetworkOneWay(app, deviceNetwork);
 
@@ -229,7 +229,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app7", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectDeviceToNetworkBothWays(app, deviceNetwork);
 
@@ -252,7 +252,7 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
         DeviceConfig deviceConfig = new DeviceConfig(Utils.HTTP_COAP_TESTING_APP_IMAGE);
         KubeDevice app = new Application("my-app8", anotherNetwork, deviceConfig);
         controller.deployDevice(app);
-        controller.deviceIsSeenBy(app, "192.168.49.1/24");
+        controller.deviceIsSeenBy(app, Utils.getLocalIp());
 
         controller.connectNetworkToDeviceOneWay(anotherNetwork, kubeDevice);
 
