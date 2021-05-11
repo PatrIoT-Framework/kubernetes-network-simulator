@@ -14,6 +14,7 @@ import io.patriot_framework.generator.network.wrappers.JSONWrapper;
 import io.patriot_framework.network_simulator.kubernetes.device.ActiveDataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
+import io.patriot_framework.network_simulator.kubernetes.exceptions.KubernetesSimulationException;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 import io.patriot_framework.network_simulator.kubernetes.utils.RequestBin;
 import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
@@ -29,7 +30,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
 
 
     @Test
-    public void createDataGeneratorDeviceTest() throws ConnectorException, IOException {
+    public void createDataGeneratorDeviceTest() throws ConnectorException, IOException, KubernetesSimulationException {
         KubeNetwork network = new KubeNetwork(NETWORK_NAME);
         controller.createNetwork(network);
 
@@ -52,7 +53,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
 
 
     @Test
-    public void createActiveDataGeneratorDeviceTest() throws IOException, InterruptedException {
+    public void createActiveDataGeneratorDeviceTest() throws IOException, InterruptedException, KubernetesSimulationException {
         RequestBin requestBin = new RequestBin();
 
         KubeNetwork network = new KubeNetwork("network123");

@@ -17,6 +17,8 @@ import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkSpec;
 import io.patriot_framework.network_simulator.kubernetes.device.DeviceConfigPort;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
+import io.patriot_framework.network_simulator.kubernetes.exceptions.KubernetesSimulationException;
+import io.patriot_framework.network_simulator.kubernetes.exceptions.WaitTimeExceededException;
 import io.patriot_framework.network_simulator.kubernetes.manager.KubernetesManager;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
@@ -57,7 +59,7 @@ public class KubernetesController implements Controller {
     }
 
     @Override
-    public void deployDevice(KubeDevice device) {
+    public void deployDevice(KubeDevice device) throws KubernetesSimulationException {
         device.finalizeConfiguration();
 
         ConfigMap configMap = null;
@@ -69,7 +71,11 @@ public class KubernetesController implements Controller {
 
         DeviceCrd deviceCrd = DeviceConverter.deviceToCrd(device, configMap);
         kubernetesManager.deviceCrd().create(deviceCrd);
-        kubernetesManager.waitPodCreation(deviceCrd);
+        try {
+            kubernetesManager.waitPodCreation(deviceCrd);
+        } catch (WaitTimeExceededException e) {
+            throw new KubernetesSimulationException(e.getMessage(), e.getCause());
+        }
         updateDeviceInformationFromKubernetes(device, deviceCrd);
 
     }

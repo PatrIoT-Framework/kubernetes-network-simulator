@@ -6,12 +6,18 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.device.DeviceList;
 
+/**
+ * Class representing custom resource of device deployed inside simulated network.
+ */
 public class DeviceCrdManager implements CrdManager<DeviceCrd> {
-    private KubernetesClient client;
-    private NonNamespaceOperation<DeviceCrd, DeviceList, Resource<DeviceCrd>> deviceCrdClient;
+    private final NonNamespaceOperation<DeviceCrd, DeviceList, Resource<DeviceCrd>> deviceCrdClient;
 
+    /**
+     * Constructor for DeviceCrdManager
+     *
+     * @param client instance of KubernetesClient
+     */
     public DeviceCrdManager(KubernetesClient client) {
-        this.client = client;
         deviceCrdClient = client.customResources(DeviceCrd.class, DeviceList.class);
     }
 

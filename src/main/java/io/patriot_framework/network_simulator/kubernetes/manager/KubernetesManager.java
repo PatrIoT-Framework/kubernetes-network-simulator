@@ -14,31 +14,50 @@ import io.patriot_framework.network_simulator.kubernetes.exceptions.WaitTimeExce
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class that represents Kubernetes manager.
+ * It implements the Manager interface and provides methods to work with Kubernetes API and Custom CRDs.
+ */
 public class KubernetesManager implements Manager {
-    private KubernetesClient kubernetesClient;
-    private CrdManager<NetworkCrd> networkCrdManager;
-    private CrdManager<DeviceCrd> deviceCrdManager;
+    private final KubernetesClient kubernetesClient;
+    private final CrdManager<NetworkCrd> networkCrdManager;
+    private final CrdManager<DeviceCrd> deviceCrdManager;
 
     private static final long DEFAULT_WAIT_TIME = 300;
 
+    /**
+     * Constructor which creates the KubernetesManager with Config object.
+     * {@link io.fabric8.kubernetes.client.Config}
+     *
+     * @param config config object which represents configuration for connecting to the Kubernetes API
+     */
     public KubernetesManager(Config config) {
         this(new DefaultKubernetesClient(config));
     }
 
+    /**
+     * Constructor which creates the KubernetesManager with KubernetesClient instance.
+     * {@link io.fabric8.kubernetes.client.KubernetesClient}
+     *
+     * @param client KubernetesClient connected to the Kubernetes API
+     */
     public KubernetesManager(KubernetesClient client) {
         kubernetesClient = client;
         networkCrdManager = new NetworkCrdManager(kubernetesClient);
         deviceCrdManager = new DeviceCrdManager(kubernetesClient);
     }
 
+    @Override
     public CrdManager<NetworkCrd> networkCrd() {
         return networkCrdManager;
     }
 
+    @Override
     public CrdManager<DeviceCrd> deviceCrd() {
         return deviceCrdManager;
     }
 
+    @Override
     public Pod getDevicePod(DeviceCrd deviceCrd) {
         return kubernetesClient
                 .pods()
@@ -49,6 +68,7 @@ public class KubernetesManager implements Manager {
                 .get();
     }
 
+    @Override
     public Service getDeviceService(DeviceCrd deviceCrd) {
         return kubernetesClient
                 .services()
@@ -59,10 +79,11 @@ public class KubernetesManager implements Manager {
                 .get();
     }
 
-    public ConfigMap createConfigMap(Map<String, String> data, String network, String name) {
+    @Override
+    public ConfigMap createConfigMap(Map<String, String> data, String namespace, String name) {
         return kubernetesClient
                 .configMaps()
-                .inNamespace(network)
+                .inNamespace(namespace)
                 .create(new ConfigMapBuilder()
                         .addToData(data)
                         .withNewMetadata()
@@ -71,7 +92,7 @@ public class KubernetesManager implements Manager {
                         .build());
     }
 
-
+    @Override
     public boolean deleteConfigMap(String namespace, String name) {
         return kubernetesClient
                 .configMaps()
@@ -80,7 +101,8 @@ public class KubernetesManager implements Manager {
                 .delete();
     }
 
-    public void waitPodCreation(DeviceCrd deviceCrd) {
+    @Override
+    public void waitPodCreation(DeviceCrd deviceCrd) throws WaitTimeExceededException {
         try {
             kubernetesClient
                     .pods()

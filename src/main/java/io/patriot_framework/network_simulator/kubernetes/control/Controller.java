@@ -1,6 +1,7 @@
 package io.patriot_framework.network_simulator.kubernetes.control;
 
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
+import io.patriot_framework.network_simulator.kubernetes.exceptions.KubernetesSimulationException;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
 
 public interface Controller {
@@ -9,7 +10,7 @@ public interface Controller {
 
     void destroyNetwork(KubeNetwork network);
 
-    void deployDevice(KubeDevice device);
+    void deployDevice(KubeDevice device) throws KubernetesSimulationException;
 
     void destroyDevice(KubeDevice device);
 

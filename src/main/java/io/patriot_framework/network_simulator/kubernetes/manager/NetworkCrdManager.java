@@ -6,12 +6,18 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkCrd;
 import io.patriot_framework.network_simulator.kubernetes.crd.network.NetworkList;
 
+/**
+ * Class representing custom resource of simulated network.
+ */
 public class NetworkCrdManager implements CrdManager<NetworkCrd> {
-    private KubernetesClient client;
-    private NonNamespaceOperation<NetworkCrd, NetworkList, Resource<NetworkCrd>> networkCrdClient;
+    private final NonNamespaceOperation<NetworkCrd, NetworkList, Resource<NetworkCrd>> networkCrdClient;
 
+    /**
+     * Constructor for NetworkCrdManager
+     *
+     * @param client instance of KubernetesClient
+     */
     public NetworkCrdManager(KubernetesClient client) {
-        this.client = client;
         networkCrdClient = client.customResources(NetworkCrd.class, NetworkList.class);
     }
 
