@@ -16,8 +16,8 @@ public class Utils {
     public static String getKubernetesUrl() {
         String url = System.getenv("PATRIOT_KUBERNETES_URL");
         if (url == null || url.equals("")) {
-            System.err.println("You need to specify ENV variable PATRIOT_KUBERNETES_URL with valid kubernetes URL");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "You need to specify ENV variable PATRIOT_KUBERNETES_URL with valid kubernetes URL");
         }
         return url;
     }
@@ -31,9 +31,8 @@ public class Utils {
     public static String getLocalIp() {
         String ip = System.getenv("PATRIOT_LOCAL_IP_ADDR");
         if (ip == null || ip.equals("")) {
-            System.err.println("You need to specify ENV variable PATRIOT_LOCAL_IP_ADDR" +
-                    " with valid IP address of this PC");
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "You need to specify ENV variable PATRIOT_LOCAL_IP_ADDR with valid IP address of this PC");
         }
         return ip;
     }
