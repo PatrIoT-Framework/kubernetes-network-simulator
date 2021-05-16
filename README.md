@@ -36,7 +36,7 @@ need to use the `Controller` interface. The following example creates KubeNetwor
 KubeDevice represents devices deployed inside a simulated network.
 The class is abstract and is extended with the following classes:
 
-* **Application** - represents a general application that can be deployed to the Kubernetes
+* **Application** - represents a general application that can be deployed to the Kubernetes.
 * **DataGenerator** - represents deployed emulated **Device** from the [Data Generator Library](https://github.com/PatrIoT-Framework/patriot-data-generator). 
 * **ActiveDataGenerator** - represents deployed emulated **Active** (device) from the [Data Generator Library](https://github.com/PatrIoT-Framework/patriot-data-generator). 
 
