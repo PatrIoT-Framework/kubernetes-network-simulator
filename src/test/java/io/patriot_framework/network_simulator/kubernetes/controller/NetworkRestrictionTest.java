@@ -29,7 +29,6 @@ public class NetworkRestrictionTest extends AbstractControllerTest {
     public void setupTest() throws KubernetesSimulationException {
         deviceNetwork = new KubeNetwork("my-nice-network");
         controller.createNetwork(deviceNetwork);
-
         DataFeed dataFeed = new NormalDistVariateDataFeed(18, 2);
         Device device = new Thermometer("simpleThermometer", dataFeed);
 

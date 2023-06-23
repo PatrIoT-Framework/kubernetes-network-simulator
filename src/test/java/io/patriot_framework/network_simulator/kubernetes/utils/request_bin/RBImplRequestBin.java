@@ -1,6 +1,7 @@
-package io.patriot_framework.network_simulator.kubernetes.utils;
+package io.patriot_framework.network_simulator.kubernetes.utils.request_bin;
 
 import com.google.gson.Gson;
+import io.patriot_framework.network_simulator.kubernetes.utils.HttpClient;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -17,16 +18,16 @@ import java.util.Objects;
 /**
  * Class representing request bin object of https://requestbin.io website.
  * Request bin is used for webhook testing. It provides a service
- * where we can send HTTP requests, the requests are stored and we can collect them afterwards.
+ * where we can send HTTP requests, the requests are stored, and we can collect them afterwards.
  */
-public class RequestBin {
+public class RBImplRequestBin implements RequestBin {
     private static final String REQUEST_BIN_URL = "https://requestbin.io";
     private static final String API_SUFFIX = "/api/v1/bins";
     private final Gson gson = new Gson();
     OkHttpClient client = new OkHttpClient.Builder().build();
-    private String name;
+    private final String name;
 
-    public RequestBin() throws IOException {
+    public RBImplRequestBin() throws IOException {
         this.name = createRequestBinInstance();
     }
 
@@ -35,11 +36,6 @@ public class RequestBin {
     }
 
 
-    /**
-     * Returns list of received webhooks
-     *
-     * @return List of RequestBinResults
-     */
     public List<RequestBinResult> getLatestResults() throws IOException {
         Request request = new Request
                 .Builder()
@@ -68,12 +64,11 @@ public class RequestBin {
             ResponseBody responseBody = response.body();
             RequestBinEntity entity =
                     gson.fromJson(Objects.requireNonNull(responseBody).string(), RequestBinEntity.class);
-
             return entity.getName();
         }
     }
 
-    private class RequestBinEntity {
+    private static class RequestBinEntity {
         private String name;
 
         public RequestBinEntity(String name) {
@@ -88,5 +83,4 @@ public class RequestBin {
             this.name = name;
         }
     }
-
 }
