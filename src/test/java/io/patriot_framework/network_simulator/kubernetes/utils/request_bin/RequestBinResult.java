@@ -1,4 +1,4 @@
-package io.patriot_framework.network_simulator.kubernetes.utils;
+package io.patriot_framework.network_simulator.kubernetes.utils.request_bin;
 
 /**
  * Represents once object retrieved from request bin.

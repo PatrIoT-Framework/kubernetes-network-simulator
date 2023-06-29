@@ -1,5 +1,6 @@
 package io.patriot_framework.network_simulator.kubernetes.controller;
 
+import io.patriot_framework.generator.Data;
 import io.patriot_framework.generator.controll.client.CoapControlClient;
 import io.patriot_framework.generator.dataFeed.ConstantDataFeed;
 import io.patriot_framework.generator.dataFeed.DataFeed;
@@ -16,17 +17,23 @@ import io.patriot_framework.network_simulator.kubernetes.device.DataGenerator;
 import io.patriot_framework.network_simulator.kubernetes.device.KubeDevice;
 import io.patriot_framework.network_simulator.kubernetes.exceptions.KubernetesSimulationException;
 import io.patriot_framework.network_simulator.kubernetes.network.KubeNetwork;
-import io.patriot_framework.network_simulator.kubernetes.utils.RequestBin;
+import io.patriot_framework.network_simulator.kubernetes.utils.request_bin.RBImplRequestBin;
 import io.patriot_framework.network_simulator.kubernetes.utils.Utils;
+import io.patriot_framework.network_simulator.kubernetes.utils.request_bin.RequestBin;
+import io.patriot_framework.network_simulator.kubernetes.utils.request_bin.RequestBinFactory;
+import io.patriot_framework.network_simulator.kubernetes.utils.request_bin.RequestBinFactoryImpl;
 import org.eclipse.californium.elements.exception.ConnectorException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KubernetesControllerTest extends AbstractControllerTest {
     private static final String NETWORK_NAME = "kubernetes-controller-network";
+    private static final RequestBinFactory requestBinFactory = new RequestBinFactoryImpl();
 
 
     @Test
@@ -54,7 +61,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
 
     @Test
     public void createActiveDataGeneratorDeviceTest() throws IOException, InterruptedException, KubernetesSimulationException {
-        RequestBin requestBin = new RequestBin();
+        RequestBin requestBin = requestBinFactory.create();
 
         KubeNetwork network = new KubeNetwork("network123");
         controller.createNetwork(network);
@@ -62,6 +69,7 @@ public class KubernetesControllerTest extends AbstractControllerTest {
         DataFeed df = new NormalDistVariateDataFeed(18, 2);
         Device temperature = new Thermometer("thermometer", df);
         NetworkAdapter na = new Rest(requestBin.url(), new JSONWrapper());
+
         temperature.setNetworkAdapter(na);
 
         DataFeed tf = new ConstantDataFeed(2000);
@@ -72,7 +80,6 @@ public class KubernetesControllerTest extends AbstractControllerTest {
         kubeDevice.getDeviceConfig().setEnableInternet(true);
 
         controller.deployDevice(kubeDevice);
-
 
         Thread.sleep(60000);
 
